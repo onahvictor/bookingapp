@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/onahvictor/BookingApp/internal/config"
+	"github.com/onahvictor/BookingApp/internal/forms"
 	"github.com/onahvictor/BookingApp/internal/models"
 	"github.com/onahvictor/BookingApp/internal/render"
 )
@@ -40,7 +41,7 @@ func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 }
 func (m *Repository) Contact(w http.ResponseWriter, r *http.Request) {
 	render.RenderTemplate(w, r, "contact.page.html", &models.TemplateData{})
-
+	
 }
 
 func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
@@ -68,7 +69,49 @@ func (m *Repository) Majors(w http.ResponseWriter, r *http.Request) {
 
 //Renders the make-reservation page and displays form
 func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
-	render.RenderTemplate(w, r, "make-reservation.page.html", &models.TemplateData{})
+	var emptyReservation models.Reservation
+	data := make(map[string]interface{})
+	data["reservation"] = emptyReservation
+
+ 	render.RenderTemplate(w, r, "make-reservation.page.html", &models.TemplateData{
+		Forms: forms.New(nil),
+		Data: data,
+	})
+}
+ 
+//PostReservation handles the posting of a reservation form
+func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil{
+		log.Println(err)
+		return
+	}
+
+	reservation := models.Reservation{
+		FirstName: r.Form.Get("first_name"),
+		LastName: r.Form.Get("last_name"),
+		Email: r.Form.Get("email"),
+		Phone: r.Form.Get("phone"),
+	}
+
+	form := forms.New(r.PostForm)
+
+	// form.Has("first_name", r)
+	form.Required("first_name", "last_name", "email", "phone")
+	form.MinLength("first_name", 3, r)
+
+	if !form.Valid(){
+		data := make(map[string]interface{})
+		data["reservation"] = reservation
+
+		render.RenderTemplate(w, r, "make-reservation.page.html", &models.TemplateData{
+			Forms: form,
+			Data: data,
+		})
+		return
+	}
+
+
 }
 
 //Renders the Search-availability page

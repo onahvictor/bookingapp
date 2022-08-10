@@ -6,7 +6,7 @@ import (
 	"github.com/justinas/nosurf"
 )
 
-//Nosurf add CSRF protection on all POST requests
+//Nosurf add CSRF protection o]n all POST requests
 func NoSurf(next http.Handler) http.Handler {
 	csrfHandler := nosurf.New(next)
 	csrfHandler.SetBaseCookie(http.Cookie{

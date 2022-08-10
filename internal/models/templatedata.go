@@ -1,5 +1,7 @@
 package models
 
+import "github.com/onahvictor/BookingApp/internal/forms"
+
 //Holds data sent from handler to templates
 type TemplateData struct {
 	StringMap map[string]string
@@ -10,6 +12,7 @@ type TemplateData struct {
 	Flash     string
 	Warning   string
 	Error     string
+	Forms     *forms.Form
 }
 
 //This will only exist to be imported by packages other than itself

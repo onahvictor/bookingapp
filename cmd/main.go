@@ -7,9 +7,9 @@ import (
 	"time"
 
 	"github.com/alexedwards/scs/v2"
-	"github.com/onahvictor/BookingApp/pkg/config"
-	"github.com/onahvictor/BookingApp/pkg/handlers"
-	"github.com/onahvictor/BookingApp/pkg/render"
+	"github.com/onahvictor/BookingApp/internal/config"
+	"github.com/onahvictor/BookingApp/internal/handlers"
+	"github.com/onahvictor/BookingApp/internal/render"
 )
 
 var app config.AppConfig
@@ -31,7 +31,7 @@ func main() {
 
 	tc, err := render.CreateTemplateCache()
 	if err != nil {
-		log.Fatal("Cannot create template cache")
+		log.Fatal(err)
 	}
 
 	app.TemplateCache = tc

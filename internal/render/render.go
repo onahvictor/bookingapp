@@ -40,7 +40,7 @@ func RenderTemplate(w http.ResponseWriter, r *http.Request, tmpl string, td *mod
 
 	t, ok := tc[tmpl]
 	if !ok {
-		log.Fatalf("Could not find %v template\n", tmpl)
+		log.Printf("Could not find %v template\n", tmpl)
 	}
 
 	buff := new(bytes.Buffer)
@@ -48,12 +48,12 @@ func RenderTemplate(w http.ResponseWriter, r *http.Request, tmpl string, td *mod
 
 	err := t.Execute(buff, td)
 	if err != nil {
-		log.Fatal("Error Writing the template to the Buffer ", err)
+		log.Println("Error Writing the template to the Buffer ", err)
 	}
 
 	_, err = buff.WriteTo(w)
 	if err != nil {
-		log.Fatal("Error writing the template to our Response", err)
+		log.Println("Error writing the template to our Response", err)
 	}
 
 }
