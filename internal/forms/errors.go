@@ -16,4 +16,4 @@ func (e errors) Get(field string) string {
 	}
 
 	return es[0]
-}  
+}
