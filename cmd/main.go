@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/gob"
 	"fmt"
 	"log"
 	"net/http"
@@ -9,6 +10,7 @@ import (
 	"github.com/alexedwards/scs/v2"
 	"github.com/onahvictor/BookingApp/internal/config"
 	"github.com/onahvictor/BookingApp/internal/handlers"
+	"github.com/onahvictor/BookingApp/internal/models"
 	"github.com/onahvictor/BookingApp/internal/render"
 )
 
@@ -17,9 +19,11 @@ var portNumber string = ":8080"
 var session *scs.SessionManager
 
 func main() {
+	//what am i going to put in the session
+	gob.Register(models.Reservation{})
 
-	app.InProduction = false
 	//change this to true when in production
+	app.InProduction = false
 
 	session = scs.New()
 	session.Lifetime = 24 * time.Hour
